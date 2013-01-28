@@ -8,6 +8,11 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
+  
+var models = require('./models');
+models.plan.fetch(function(error){
+    if(error) console.log("ERROR");
+});
 
 var app = express();
 
