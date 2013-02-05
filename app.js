@@ -9,15 +9,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path');
   
-var models = require('./models');
-plan = new models.Plan(1);
-plan.fetch(function(error){
-    if(error) console.log("ERROR: " + error);
-});
-plan = new models.Plan(2);
-plan.fetch(function(error){
-    if(error) console.log("ERROR: " + error);
-});
+var controller = require('./controller');
+controller.fetch.startFetch();
 
 var app = express();
 

@@ -3,15 +3,26 @@ var htmlparser = require("htmlparser");
 var sys = require('sys');
 var soupselect = require('soupselect');
 var Entry = require('./entry').Entry;
+var reportedHashes = new Array();
 
+function oc(a)
+{
+  var o = {};
+  for(var i=0;i<a.length;i++)
+  {
+    o[a[i]]='';
+  }
+  return o;
+}
 
 exports.Plan = function(type){
 
     this.file = 'subst_00'+type+'.htm';
     this.rawData = '';
     this.date = '';
-    this.parsedDataNew = {};
     this.parsedData = {};
+    this.entrySet = new Array();
+
     this.fetch = function(callback){
         this.rawData = '';
         var username = 'schueler';
@@ -46,8 +57,8 @@ exports.Plan = function(type){
                 callback(error);
             else
                 try{
-                    store.parsedDataNew = handler.dom;
-                    store.date = soupselect.select(store.parsedDataNew, '.mon_title')[0].children[0].data;
+                    store.parsedData = handler.dom;
+                    store.date = soupselect.select(store.parsedData, '.mon_title')[0].children[0].data;
                     store.date = store.date.split(" ")[0];
                     store.compareData(callback);
                 }catch(err){
@@ -61,7 +72,7 @@ exports.Plan = function(type){
 
     this.compareData = function(callback){
         var store = this;
-        soupselect.select(this.parsedDataNew, '.mon_list')[0].children.forEach(function(element){
+        soupselect.select(this.parsedData, '.mon_list')[0].children.forEach(function(element){
             items = soupselect.select(element, 'td');
             if(soupselect.select(element, 'th').length == 0 && items.length == 6){ //Header Zeile?
                 /* items[0] => Stunde
@@ -79,9 +90,21 @@ exports.Plan = function(type){
                      room       : items[4].children[0].data,
                      comment    : (items[5].children[0].children)?items[5].children[0].children[0].data:''
                  });
+                 store.entrySet.push(entry);
             }
-            callback(null);
         });
+        callback(null);
     }
-
+    
+    this.getNewEntrySet = function(callback){
+        var result = new Array();
+        for(var i = 0; i < this.entrySet.length; i++){
+            if(!(this.entrySet[i].generateHash() in oc(reportedHashes))){
+                reportedHashes.push(this.entrySet[i].generateHash());
+                result.push(this.entrySet[i]);
+            }
+        }
+        
+        callback(result);
+    }
 }

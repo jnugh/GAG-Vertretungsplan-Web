@@ -7,6 +7,7 @@ exports.Entry = function(options){
     this.classes = options.classes;
     this.room = options.room;
     this.comment = options.comment;
+    this.hash = null;
     
     this.getHour = function(){
         return this.hour;
@@ -33,7 +34,8 @@ exports.Entry = function(options){
     }
     
     this.generateHash = function(date){
-        var hash = crypto.createHash('md5').update(this.hour + this.teacher + this.subject + this.classes + this.room + this.comment + date).digest("hex");
-        return hash;
+        if(this.hash == null)
+            this.hash = crypto.createHash('md5').update(this.hour + this.teacher + this.subject + this.classes + this.room + this.comment + date).digest("hex");
+        return this.hash;
     }
 }
