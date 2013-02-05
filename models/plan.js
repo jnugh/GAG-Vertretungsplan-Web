@@ -5,6 +5,8 @@ var soupselect = require('soupselect');
 var Entry = require('./entry').Entry;
 var reportedHashes = new Array();
 
+exports.planArr = new Array();
+
 function oc(a)
 {
   var o = {};
@@ -16,7 +18,7 @@ function oc(a)
 }
 
 exports.Plan = function(type){
-
+    exports.planArr[type] = this;
     this.file = 'subst_00'+type+'.htm';
     this.rawData = '';
     this.date = '';
