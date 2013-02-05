@@ -9,6 +9,7 @@
     "express": "3.0.4",
     "jade": "*",
     "htmlparser": "1.7.x",
-    "soupselect": "0.2.x"
+    "soupselect": "0.2.x",
+    "mongoose": "3.5.x"
   }
 }

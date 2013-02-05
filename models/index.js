@@ -1,1 +1,1 @@
-exports.plan = require('./plan');
+exports.Plan = require('./plan').Plan;

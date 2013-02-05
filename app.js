@@ -10,8 +10,13 @@ var express = require('express')
   , path = require('path');
   
 var models = require('./models');
-models.plan.fetch(function(error){
-    if(error) console.log("ERROR");
+plan = new models.Plan(1);
+plan.fetch(function(error){
+    if(error) console.log("ERROR: " + error);
+});
+plan = new models.Plan(2);
+plan.fetch(function(error){
+    if(error) console.log("ERROR: " + error);
 });
 
 var app = express();
