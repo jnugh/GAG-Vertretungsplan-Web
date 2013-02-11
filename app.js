@@ -8,7 +8,7 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
-  
+
 var controller = require('./controller');
 controller.fetch.startFetch();
 
@@ -32,7 +32,7 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-app.get('/plan/:id', routes.plan)
+app.get('/plan/:id', routes.plan);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

@@ -8,34 +8,44 @@ exports.Entry = function(options){
     this.room = options.room;
     this.comment = options.comment;
     this.hash = null;
-    
+
     this.getHour = function(){
         return this.hour;
-    }
-    
+    };
+
     this.getTeacher = function(){
         return this.teacher;
-    }
-    
+    };
+
     this.getSubject = function(){
         return this.subject;
-    }
-    
+    };
+
     this.getClass = function(){
         return this.classes;
-    }
-    
+    };
+
     this.getRoom = function(){
         return this.room;
-    }
-    
+    };
+
     this.getComment = function(){
         return this.comment;
-    }
-    
+    };
+
     this.generateHash = function(date){
-        if(this.hash == null)
-            this.hash = crypto.createHash('md5').update(this.hour + this.teacher + this.subject + this.classes + this.room + this.comment + date).digest("hex");
+        if(this.hash === null) {
+            this.hash = crypto.createHash('md5')
+            .update(
+                this.hour +
+                this.teacher +
+                this.subject +
+                this.classes +
+                this.room +
+                this.comment +
+                date)
+            .digest("hex");
+        }
         return this.hash;
-    }
-}
+    };
+};

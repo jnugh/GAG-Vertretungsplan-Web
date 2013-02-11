@@ -84,6 +84,11 @@ exports.Plan = function(type){
                  * items[4] => Raum
                  * items[5] => Anmerkung
                  */
+                 for(var i = 0; i < items.length; i++){
+                    if(items[i].children[0].data != undefined){
+                        items[i].children[0].data = items[i].children[0].data.replace('&nbsp;', ' ').trim();
+                    }
+                 }
                  entry = new Entry({
                      hour       : items[0].children[0].data,
                      teacher    : (items[1].children[0].children)?items[1].children[0].children[0].data:'',
