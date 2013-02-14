@@ -1,7 +1,30 @@
 var models = require('../models');
+var user = require('../models/user');
+var gcm = require('./gcm');
 
 function entrySetCallback(arr){
+    var i = 0;
+    for(i = 0; i < arr.length; i++){
+        informUsers(arr[i]);
+    }
     console.log("Zahl neue Daten: " + arr.length);
+}
+
+function informUsers(entry){
+    var classList = [];
+    entry.getClass().split(',').forEach(function(val){
+        classList.push(val.trim());
+    });
+    user.model.find({
+        'classes' : { $in : classList},
+        'notify': true
+    }, function(err, docs){
+        if(err)
+            console.err("DB error: " + err);
+        if(docs.length > 0){
+            gcm.send(docs, entry.getSubject() + " fällt aus!");
+        }
+    });
 }
 
 exports.startFetch = function(){

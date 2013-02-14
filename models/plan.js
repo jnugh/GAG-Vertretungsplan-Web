@@ -36,7 +36,7 @@ exports.Plan = function(type){
         
         try{
             var request = http.get(header, function(res){
-                res.setEncoding('utf8');
+                res.setEncoding('binary');
                 res.on("data", function(chunk) {
                     store.rawData += chunk;
                 }).on('end', function(){
