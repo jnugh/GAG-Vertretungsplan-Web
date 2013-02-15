@@ -41,7 +41,6 @@ exports.remove = function(req, res){
 exports.add = function(req, res){
   res.setHeader('Content-Type', 'application/json');
   var data = req.query;
-  console.log(data);
   result = {};
   result.status = true;
   if(data.gtoken === undefined){
@@ -63,8 +62,8 @@ exports.add = function(req, res){
         console.log(result);
         return;
     } else if(doc !== null){
-        result.status = false;
-        result.err = "GToken already registered";
+        result.status = true;
+        result.id = doc._id;
         res.write(JSON.stringify(result));
         res.end();
         console.log(result);
@@ -123,9 +122,53 @@ exports.add = function(req, res){
 };
 
 exports.set = function(req, res){
-  res.send("respond with a resource");
-};
-
-exports.exists = function(req, res){
-  res.send("respond with a resource");
+    res.setHeader('Content-Type', 'application/json');
+    var data = req.query;
+    user.model.findOne({'_id': mongoose.Types.ObjectId(req.params.id)}, 
+    function(err, doc){
+        var result = {};
+        result.status = true;
+        if(err){
+            result.status = false;
+            result.err = err;
+            res.write(JSON.stringify(result));
+            res.end();
+            console.log(result);
+        } else {
+            if(doc === null){
+                result.status = false;
+                result.err = 'UserNotFound';
+                res.write(JSON.stringify(result));
+                res.end();
+                console.log(result);
+            } else {
+                doc.classes = data.classes;
+                doc.notify = data.notify;
+                try{
+                    subjects = JSON.parse(data.subjects);
+                } catch(e){
+                    console.error("Could not parse subjects", e);
+                    result.status = false;
+                    result.err = "Could not parse subjects";
+                    res.write(JSON.stringify(result));
+                    res.end();
+                    console.log(result);
+                    return;
+                }
+                doc.subjects = [];
+                for(i = 0; i < subjects.length; i++){
+                    doc.subjects.push({name: subjects[i]});
+                }
+                doc.save(function(err){
+                    if(err){
+                        result.status = false;
+                        result.err = err;
+                    }
+                    res.write(JSON.stringify(result));
+                    res.end();
+                    console.log(result);
+                });
+            }
+        }
+    });
 };
