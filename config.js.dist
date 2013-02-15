@@ -1,1 +1,3 @@
 exports.gkey = 'YOURAPIKEY';
+exports.authUser = 'AuthUser';
+exports.authPass = 'AuthPW';

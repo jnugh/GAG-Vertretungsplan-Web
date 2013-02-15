@@ -3,6 +3,7 @@ var htmlparser = require("htmlparser");
 var sys = require('sys');
 var soupselect = require('soupselect');
 var Entry = require('./entry').Entry;
+var config = require('../config');
 var reportedHashes = new Array();
 
 exports.planArr = new Array();
@@ -27,8 +28,8 @@ exports.Plan = function(type){
 
     this.fetch = function(callback){
         this.rawData = '';
-        var username = 'schueler';
-        var password = 'grafadolf';
+        var username = config.authUser;
+        var password = config.authPass;
         var auth = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
         var header = {host: 'www.graf-adolf-gymnasium.de', headers: {Authorization: auth}, path: '/vertretung_online/'+this.file};
         
