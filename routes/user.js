@@ -72,7 +72,7 @@ exports.add = function(req, res){
         newUser = new user.model({
             gtoken: data.gtoken,
             classes: data.classes,
-            notify: data.notify
+            notify: (data.notify == 'true')?true:false
         });
         var subjects;
         if(data.subjects){
@@ -143,7 +143,7 @@ exports.set = function(req, res){
                 console.log(result);
             } else {
                 doc.classes = data.classes;
-                doc.notify = data.notify;
+                doc.notify = (data.notify == 'true')?true:false;
                 try{
                     subjects = JSON.parse(data.subjects);
                 } catch(e){

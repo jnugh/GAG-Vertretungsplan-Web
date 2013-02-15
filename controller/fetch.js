@@ -22,7 +22,28 @@ function informUsers(entry){
         if(err)
             console.err("DB error: " + err);
         if(docs.length > 0){
+            console.log("Inform "+docs.length + " users about "+ entry.getSubject());
             gcm.send(docs, entry.getSubject() + " fällt aus!");
+        }
+    });
+    
+    user.model.find({
+        'classes' : { $in : classList},
+        'notify': false
+    }, function(err, docs){
+        if(err)
+            console.err("DB error: " + err);
+        var useDocs = [];
+        for(i = 0; i < docs.length; i++){
+            for(j = 0; j < docs[i].subjects.length; j++){
+                if(docs[i].subjects[j].name == entry.getSubject()){
+                    useDocs.push(docs[i]);
+                }
+            }
+        }
+        if(useDocs.length > 0){
+            console.log("Inform "+useDocs.length + " users about "+ entry.getSubject());
+            gcm.send(useDocs, entry.getSubject() + " fällt aus!");
         }
     });
 }
