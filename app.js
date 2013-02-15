@@ -35,6 +35,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/get', routes.get);
 app.get('/users/:id/remove', user.remove);
 app.get('/users/add', user.add);
 app.get('/users/:id/set', user.set);
