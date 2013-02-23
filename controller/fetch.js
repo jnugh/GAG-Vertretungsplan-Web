@@ -2,6 +2,9 @@ var models = require('../models');
 var user = require('../models/user');
 var gcm = require('./gcm');
 
+gcm.disable();
+var firstrun = true;
+
 function entrySetCallback(arr){
     var i = 0;
     for(i = 0; i < arr.length; i++){
@@ -49,6 +52,11 @@ function informUsers(entry){
 }
 
 exports.startFetch = function(){
+    if(firstrun){
+        firstrun = false;
+    } else {
+        gcm.enable();
+    }
     plan1 = new models.Plan(1);
     plan1.fetch(function(error){
         if(error) {

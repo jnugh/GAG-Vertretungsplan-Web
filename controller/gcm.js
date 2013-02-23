@@ -3,7 +3,21 @@ var config = require('../config');
 var userModel = require('../models/user');
 var mongoose = require('mongoose');
 
+var enabled = true;
+
+exports.disable = function(){
+    enabled = false;
+}
+
+exports.enable = function(){
+    enabled = true;
+}
+
 exports.send = function(users, message){
+    if(!enabled){
+        console.log("GCM disabled!");
+        return;
+    }
     var userIds = [];
     for (i = 0; i < users.length; i++){
         userIds.push(users[i].gtoken);
